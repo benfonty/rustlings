@@ -18,7 +18,7 @@ impl Default for Person {
     }
 }
 
-// I AM NOT DONE
+
 // Your task is to complete this implementation
 // in order for the line `let p = Person::from("Mark,20")` to compile
 // Please note that you'll need to parse the age component into a `usize`
@@ -34,6 +34,15 @@ impl Default for Person {
 // Otherwise, then return an instantiated Person onject with the results
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        if s.len() != 0 {
+            let ss: Vec<&str> = s.split(',').collect();
+            if ss.len() == 2 {
+                if let Ok(a) = ss[1].parse::<usize>() {
+                    return Person{name: String::from(ss[0]), age: a};
+                }
+            }
+        }
+        Person::default()
     }
 }
 
@@ -67,6 +76,13 @@ mod tests {
     fn test_good_convert() {
         // Test that "Mark,20" works
         let p = Person::from("Mark,20");
+        assert_eq!(p.name, "Mark");
+        assert_eq!(p.age, 20);
+    }
+
+    #[test]
+    fn my_test() {
+        let p: Person = "Mark,20".into();
         assert_eq!(p.name, "Mark");
         assert_eq!(p.age, 20);
     }
